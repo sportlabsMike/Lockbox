@@ -28,6 +28,7 @@ static NSString *_defaultKeyPrefix = nil;
 
 @interface Lockbox()
 @property (strong, nonatomic, readwrite) NSString *keyPrefix;
+@property (strong, nonatomic, readwrite) NSString *keychainAccessGroup;
 @end
 
 @implementation Lockbox
@@ -43,26 +44,34 @@ static NSString *_defaultKeyPrefix = nil;
 
 -(instancetype)init
 {
-    self = [super init];
-    if (self) {
-        self.keyPrefix = _defaultKeyPrefix;
-    }
-    return self;
+    return [self initWithKeyPrefix:_defaultKeyPrefix keychainAccessGroup:nil];
 }
 
 -(instancetype)initWithKeyPrefix:(NSString *)keyPrefix
 {
-    self = [self init];
-    if (self) {
-        if (keyPrefix)
-            self.keyPrefix = keyPrefix;
+    return [self initWithKeyPrefix:keyPrefix keychainAccessGroup:nil];
+}
+
+-(instancetype)initWithKeyPrefix:(NSString *)keyPrefix keychainAccessGroup:(NSString *)keychainAccessGroup
+{
+    if (self = [super init]) {
+        self.keyPrefix = keyPrefix;
+        self.keychainAccessGroup = keychainAccessGroup;
     }
     return self;
+}
+
+- (void)_setKeychainAccessGroup:(NSMutableDictionary *)dict
+{
+    if (self.keychainAccessGroup != nil) {
+        [dict setObject:self.keychainAccessGroup forKey:(LOCKBOX_ID)kSecAttrAccessGroup];
+    }
 }
 
 -(NSMutableDictionary *)_service
 {
     NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    [self _setKeychainAccessGroup:dict];
     
     [dict setObject: (LOCKBOX_ID) kSecClassGenericPassword  forKey: (LOCKBOX_ID) kSecClass];
 
@@ -72,10 +81,11 @@ static NSString *_defaultKeyPrefix = nil;
 -(NSMutableDictionary *)_query
 {
     NSMutableDictionary* query = [NSMutableDictionary dictionary];
+    [self _setKeychainAccessGroup:query];
     
     [query setObject: (LOCKBOX_ID) kSecClassGenericPassword forKey: (LOCKBOX_ID) kSecClass];
     [query setObject: (LOCKBOX_ID) kCFBooleanTrue           forKey: (LOCKBOX_ID) kSecReturnData];
-
+    
     return query;
 }
 

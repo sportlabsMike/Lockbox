@@ -38,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		28B46C481AD2D4ED005339B2 /* LockBox.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = LockBox.entitlements; sourceTree = "<group>"; };
 		2D0B9E5F1540556E00E5BE71 /* LockBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LockBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D0B9E631540556E00E5BE71 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2D0B9E651540556E00E5BE71 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -124,6 +125,7 @@
 		2D0B9E691540556E00E5BE71 /* LockBox */ = {
 			isa = PBXGroup;
 			children = (
+				28B46C481AD2D4ED005339B2 /* LockBox.entitlements */,
 				2D0B9E801540558B00E5BE71 /* Lockbox.h */,
 				2D0B9E811540558B00E5BE71 /* Lockbox.m */,
 				2D0B9E721540556E00E5BE71 /* AppDelegate.h */,
@@ -224,6 +226,16 @@
 				LastTestingUpgradeCheck = 0600;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Hawk iMedia";
+				TargetAttributes = {
+					2D0B9E5E1540556E00E5BE71 = {
+						DevelopmentTeam = TXVS4QM239;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = 2D0B9E591540556D00E5BE71 /* Build configuration list for PBXProject "LockBox" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -411,12 +423,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = LockBox/LockBox.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LockBox/LockBox-Prefix.pch";
 				INFOPLIST_FILE = "LockBox/LockBox-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -425,12 +441,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = LockBox/LockBox.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LockBox/LockBox-Prefix.pch";
 				INFOPLIST_FILE = "LockBox/LockBox-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

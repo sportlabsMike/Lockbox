@@ -153,4 +153,39 @@
     XCTAssertEqualObjects(customKeyPrefix, lb.keyPrefix, @"Custom key prefix should equal '%@'", customKeyPrefix);
 }
 
+static NSString *keychainAccessGroupWithSuffix(NSString *suffix)
+{
+    NSString *prefix = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppIdentifierPrefix"];
+    return [prefix stringByAppendingString:suffix];
+}
+
+- (void)testDefaultKeychainAccessGroup
+{
+    NSString *customKeyPrefix = @"my.custom.keyPrefix";
+    Lockbox *lb1 = [[Lockbox alloc] initWithKeyPrefix:customKeyPrefix keychainAccessGroup:nil];
+    Lockbox *lb2 = [[Lockbox alloc] initWithKeyPrefix:customKeyPrefix keychainAccessGroup:keychainAccessGroupWithSuffix(@"com.hawkimedia.LockBox")];
+
+    XCTAssertTrue([lb1 setString:@"value1" forKey:@"key1"]);
+    XCTAssertTrue([lb2 setString:@"value2" forKey:@"key2"]);
+    XCTAssertEqualObjects([lb1 stringForKey:@"key2"], @"value2");
+    XCTAssertEqualObjects([lb2 stringForKey:@"key1"], @"value1");
+}
+
+- (void)testKeychainAccessGroupsAreSeparate
+{
+    NSString *customKeyPrefix = @"my.custom.keyPrefix";
+    Lockbox *lb1 = [[Lockbox alloc] initWithKeyPrefix:customKeyPrefix keychainAccessGroup:keychainAccessGroupWithSuffix(@"com.hawkimedia.LockBox")];
+    Lockbox *lb2 = [[Lockbox alloc] initWithKeyPrefix:customKeyPrefix keychainAccessGroup:keychainAccessGroupWithSuffix(@"com.hawkimedia.LockBox2")];
+
+    [lb1 setString:nil forKey:@"key2"];
+    [lb2 setString:nil forKey:@"key1"];
+    XCTAssertTrue([lb1 setString:@"value1" forKey:@"key1"]);
+    XCTAssertTrue([lb2 setString:@"value2" forKey:@"key2"]);
+    
+    XCTAssertEqualObjects([lb1 stringForKey:@"key1"], @"value1");
+    XCTAssertNil([lb1 stringForKey:@"key2"]);
+    XCTAssertNil([lb2 stringForKey:@"key1"]);
+    XCTAssertEqualObjects([lb2 stringForKey:@"key2"], @"value2");
+}
+
 @end

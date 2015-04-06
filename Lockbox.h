@@ -20,6 +20,11 @@
 // default key prefix simply by calling [[Lockbox alloc] init];
 -(instancetype)initWithKeyPrefix:(NSString *)keyPrefix;
 
+// By default, the kSecAttrAccessGroup key is not set on keychain search dictionary, providing
+// access to the default keychain access group for the app. Use this initialiser to instantiate
+// Lockbox with a different keychain access group.
+-(instancetype)initWithKeyPrefix:(NSString *)keyPrefix keychainAccessGroup:(NSString *)keychainAccessGroup NS_DESIGNATED_INITIALIZER;
+
 // When adding instance methods, remember to add a corresponding class method.
 
 -(BOOL)setString:(NSString *)value forKey:(NSString *)key;
